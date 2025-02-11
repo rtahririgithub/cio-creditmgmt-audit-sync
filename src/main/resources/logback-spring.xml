@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration>
+<!-- <configuration debug="true" scan="true" scanPeriod="30 minutes">  -->
+
+    <springProfile name="default">
+    	<property name="MY_LOG_LEVEL" value="debug"/>
+       <appender name="CONSOLE-APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+         <encoder>
+            <Pattern>[%d{HH:mm:ss.SSS}]:[%cyan(%-20logger{20})][logseveritylevel=%-5level]:%msg %n</Pattern>
+         </encoder>
+      </appender>
+
+        <logger name="com.telus.api" level="${MY_LOG_LEVEL}" additivity="false">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+
+        </logger>
+        <logger name="org.springframework" level="${MY_LOG_LEVEL}" additivity="false">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+        </logger>
+
+        <root level="${MY_LOG_LEVEL}">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+        </root>
+    </springProfile>
+
+
+
+    <springProfile name="cloud-dev">
+    	<property name="MY_LOG_LEVEL" value="debug"/>
+       <appender name="CONSOLE-APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+         <encoder>
+            <Pattern>[%d{HH:mm:ss.SSS}]:[%cyan(%-20logger{20})][logseveritylevel=%-5level]:%msg %n</Pattern>
+         </encoder>
+      </appender>
+
+        <logger name="com.telus.api" level="${MY_LOG_LEVEL}" additivity="false">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+
+        </logger>
+        <logger name="org.springframework" level="${MY_LOG_LEVEL}" additivity="false">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+        </logger>
+
+        <root level="${MY_LOG_LEVEL}">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+        </root>
+    </springProfile>
+   <springProfile name="cloud-it03">
+   		<property name="MY_LOG_LEVEL" value="debug"/>
+        <appender name="CONSOLE-APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+         <encoder>
+            <Pattern>[%d{HH:mm:ss.SSS}]:[%cyan(%-20logger{20})][logseveritylevel=%-5level]:%msg %n</Pattern>
+         </encoder>
+      </appender>
+
+        <logger name="com.telus.api" level="${MY_LOG_LEVEL}" additivity="false">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+
+        </logger>
+        <logger name="org.springframework" level="${MY_LOG_LEVEL}" additivity="false">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+        </logger>
+
+        <root level="${MY_LOG_LEVEL}">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+        </root>
+    </springProfile>
+    
+    
+   <springProfile name="cloud-prd">
+   	<property name="MY_LOG_LEVEL" value="debug"/>
+        <appender name="CONSOLE-APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+         <encoder>
+            <Pattern>[%d{HH:mm:ss.SSS}]:[%cyan(%-20logger{20})][logseveritylevel=%-5level]:%msg %n</Pattern>
+         </encoder>
+      </appender>
+
+        <logger name="com.telus.api" level="${MY_LOG_LEVEL}" additivity="false">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+
+        </logger>
+        <logger name="org.springframework" level="${MY_LOG_LEVEL}" additivity="false">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+        </logger>
+
+        <root level="${MY_LOG_LEVEL}">
+            <appender-ref ref="CONSOLE-APPENDER"/>
+        </root>
+    </springProfile>
+   
+</configuration>

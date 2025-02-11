@@ -1,0 +1,61 @@
+
+name: Spectral linting
+on:
+  push:
+    paths:
+      - 'src/main/resources/*.oas2.*'
+
+jobs:
+  build:
+    name: Run Spectral
+    runs-on: ubuntu-latest
+    env:
+      REPO_SETUP_TOKEN: ${{ secrets.ARC_GH_WRKFLW }}
+      TMF_DIR: tmf-linting
+      TMF_SOURCE_PATH: ApiLintingCapability/Release
+      TMF_RULE_FILE: ApiLintingCapabilityRuleset.yaml
+      TMF_RESULT_NAME: tmf_lint_result
+    steps:
+      # Check out the repository
+      - uses: actions/checkout@v2
+            
+      - name: Remove old lint dir
+        run: |         
+          if [ -d "$TMF_DIR" ]; then
+          rm -d -r $TMF_DIR
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git commit -am 'removed old spectral result'
+          git push origin main -f
+          fi
+     
+      - name: Get latest rule files
+        uses: actions/checkout@v3
+        with:
+          repository: telus/API-OnBoarding-Improvements
+          path: ruleset-repo
+          token: ${{ secrets.ARC_GH_WRKFLW }}
+                      
+      - name: Copy ruleset files
+        run: |
+          mkdir $TMF_DIR
+          cp -r ruleset-repo/$TMF_SOURCE_PATH/* $TMF_DIR/
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add $TMF_DIR/
+          git commit -am 'got latest ruleset'
+          git push origin main -f
+          
+      - name: Get Spectral and Lint ...
+        run: |
+          npm install -g @stoplight/spectral-cli    
+          spectral lint src/main/resources/*.oas2.* --ruleset $TMF_DIR/$TMF_RULE_FILE  --format stylish --format json  --output.stylish $TMF_DIR/$TMF_RESULT_NAME.out --output.json $TMF_DIR/$TMF_RESULT_NAME.json
+          
+      - name: Store the result
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git fetch origin
+          git add $TMF_DIR/$TMF_RESULT_NAME.*          
+          git commit -am 'Spectral Result'
+          git push origin main -f
